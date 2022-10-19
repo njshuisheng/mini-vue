@@ -1,15 +1,30 @@
-import { effect, obj } from './reactivity'
+import { h, Fragment, Portal } from './renderer/h'
+import { render } from './renderer/render'
 
 
-effect(() => {
-  console.log('run...')
-  document.body.innerHTML = obj.ok ? obj.text : 'not'
-})
 
+// 旧的 VNode
+const prevVNode = h('div', null,
+  h('p', {
+    style: {
+      height: '100px',
+      width: '100px',
+      background: 'red'
+    }
+  })
+)
+
+// 新的 VNode
+const nextVNode = h('div', null,
+  h('p', {
+    style: {
+      height: '100px',
+      width: '100px',
+      background: 'green'
+    }
+  })
+)
+render(prevVNode, document.getElementById('app'))
 setTimeout(() => {
-  obj.ok = false
-}, 1000)
-
-setTimeout(() => {
-  obj.text = 'hello'
+  render(nextVNode, document.getElementById('app'))
 }, 2000)
